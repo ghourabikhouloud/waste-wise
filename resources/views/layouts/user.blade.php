@@ -250,9 +250,11 @@
 								<div class="bg-dark border rounded-3 pb-0 p-3 w-100">
 									<!-- Dashboard menu -->
 									<div class="list-group list-group-dark list-group-borderless">
-										<a class="list-group-item"><i class="fas fa-address-card fa-fw me-2"></i>............</a>
-										<a class="list-group-item"><i class="fas fa-plus fa-fw"></i>............</a>
-										<a class="list-group-item"><i class="fas fa-stream"></i>............</a>
+										<a class="list-group-item"><i class="fas fa-address-card fa-fw me-2"></i>Event<a>
+										<a class="list-group-item"><i class="fas fa-plus fa-fw"></i>Community</a>
+										<a class="list-group-item"><i class="fas fa-stream"></i>Recycle Center</a>
+										<a class="list-group-item"><i class="fas fa-plus fa-fw"></i>Waste tips</a>
+										<a class="list-group-item"><i class="fas fa-stream"></i>Donnation</a>
 										<a class="list-group-item text-danger bg-danger-soft-hover"><i class="fas fa-sign-out-alt fa-fw me-2"></i>Logout</a>
 									</div>
 								</div>	
