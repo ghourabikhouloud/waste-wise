@@ -9,40 +9,35 @@ use Illuminate\Http\Request;
 class WasteTipController extends Controller
 {
 
-   // Afficher le formulaire de création
    public function index()
 {
     $adviceTypes = AdviceType::all();
-    $wasteTips = WasteTip::with('adviceType')->get(); // Récupère tous les WasteTips avec leur AdviceType
+    $wasteTips = WasteTip::with('adviceType')->get();
 
     return view('admin.WasteTips', compact('adviceTypes', 'wasteTips'));
 }
 
-   // Stocker le Waste Tip
    public function store(Request $request)
    {
-       // Validation des données
        $request->validate([
            'title' => 'required|string|max:255',
            'content' => 'required|string',
-           'advice_type_id' => 'required|exists:advice_types,id', // Assure-toi que l'ID existe
-           'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Validation pour l'image
+           'advice_type_id' => 'required|exists:advice_types,id',
+           'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
        ]);
    
-       // Gestion de l'upload de l'image
-       $imagePath = null; // Initialisation du chemin de l'image
+       $imagePath = null;
        if ($request->hasFile('image')) {
-           $imagePath = $request->file('image')->store('images/waste_tips', 'public'); // Stockage de l'image dans le dossier public
+           $imagePath = $request->file('image')->store('images/waste_tips', 'public');
        }
    
-       // Création d'un nouveau WasteTip
        WasteTip::create([
            'title' => $request->title,
            'content' => $request->content,
            'advice_type_id' => $request->advice_type_id,
-           'author' => auth()->user()->id, // Par exemple, si tu veux attribuer l'auteur
-           'Creation_date' => now(), // Date de création
-           'image' => $imagePath, // Enregistrement du chemin de l'image
+           'author' => auth()->user()->id,
+           'Creation_date' => now(),
+           'image' => $imagePath, 
        ]);
    
        return redirect()->route('admin.WasteTips')->with('success', 'Waste Tip added successfully!');
@@ -73,7 +68,7 @@ class WasteTipController extends Controller
 
     public function show($id)
     {
-        //
+       
     }
 
     
@@ -85,12 +80,8 @@ class WasteTipController extends Controller
      */
     public function destroy($id)
     {
-        // Récupération du WasteTip par ID
         $wasteTip = WasteTip::findOrFail($id);
-        
-        // Suppression du WasteTip
         $wasteTip->delete();
-    
         return redirect()->route('admin.WasteTips')->with('success', 'Waste Tip deleted successfully!');
     }
 }
