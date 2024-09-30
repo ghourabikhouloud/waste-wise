@@ -3,7 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
-
+use App\Http\Controllers\AdviceTypeController;
+use App\Http\Controllers\WasteTipController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,14 +21,12 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    // Vérifiez le type d'utilisateur et redirigez vers la vue appropriée
     if (Auth::user()->utype === 'USR') {
-        return redirect()->route('layouts.user'); // Redirige vers la vue utilisateur
+        return redirect()->route('layouts.user');
     } elseif (Auth::user()->utype === 'ADMIN') {
-        return redirect()->route('layouts.adminLayout'); // Redirige vers la vue administrateur
+        return redirect()->route('layouts.adminLayout'); 
     }
-    
-    return redirect()->route('home'); // Redirection par défaut (ajoutez une route ou une vue de votre choix)
+    return redirect()->route('home'); 
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -35,14 +34,21 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-Route::get('/user-dashboard', function () {
-    return view('layouts.user');
-})->name('layouts.user');
-Route::get('/admin-dashboard', function () {
-    return view('layouts.adminLayout');
-})->name('layouts.adminLayout');
+Route::get('/user-dashboard', function () { return view('layouts.user');})->name('layouts.user');
+Route::get('/admin-dashboard', function () {return view('layouts.adminLayout');})->name('layouts.adminLayout');
+Route::prefix('dashboard_admin')->group(function () {
+    Route::get('/adviceType', [AdviceTypeController::class, 'index'])->name('admin.adviceType');
+    Route::post('/adviceType', [AdviceTypeController::class, 'store'])->name('admin.adviceType');
+    Route::delete('/adviceType/{id}', [AdviceTypeController::class, 'destroy'])->name('admin.adviceType.destroy');
+    Route::put('/adviceType/{id}', [AdviceTypeController::class, 'update'])->name('admin.adviceType.update');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    // Routes pour WasteTip
+    Route::get('/wasteTips', [WasteTipController::class, 'index'])->name('admin.WasteTips');
+    Route::post('/wasteTips', [WasteTipController::class, 'store'])->name('admin.WasteTips');
+    Route::delete('/wasteTips/{id}', [WasteTipController::class, 'destroy'])->name('wasteTips.destroy');  
+    Route::put('/wasteTips/{id}', [WasteTipController::class, 'update'])->name('admin.WasteTips.update');
 
-
+}
+    
+);
 require __DIR__.'/auth.php';
